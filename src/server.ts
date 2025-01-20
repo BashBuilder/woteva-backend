@@ -1,33 +1,34 @@
 import express, { Request, Response } from "express";
-import { testConnection } from "./utils/test-db";
 import dotenv from "dotenv";
-import sequelize, { checkDatabaseConnection } from "./utils/sequelize";
+import sequelize, {
+  checkDatabaseConnection,
+  initSequelize,
+} from "./utils/sequelize";
 import cors from "cors";
+import authRoutes from "./routes/auth.route";
 
 dotenv.config();
 const app = express();
 
 const port = process.env.PORT;
 
-sequelize
-  .sync()
-  .then(() => console.log("Connected to the database"))
-  .catch((err) => console.error("Unable to connect to the database", err));
+initSequelize();
 
-app.use(express.json());
+app.use(
+  express.json({
+    limit: "5mb",
+  })
+);
 app.use(
   cors({
     origin: "*",
   })
 );
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello, TypeScript + Node.js + Express!");
-});
+app.use("/auth", authRoutes);
 
 app.get("/health", async (req: Request, res: Response) => {
-  const test = await testConnection();
-  res.send(`"Backend is live ${test} `);
+  res.send(`Backend is live `);
 });
 
 checkDatabaseConnection().then(() => {
@@ -35,7 +36,3 @@ checkDatabaseConnection().then(() => {
     console.log(`Server is running on http://localhost:${port}`);
   });
 });
-
-// app.listen(port, () => {
-//   console.log(`Server is running on http://localhost:${port}`);
-// });

@@ -1,7 +1,7 @@
-import { DataTypes, Model, Sequelize, UUID } from "sequelize";
+import { DataTypes, Model, Sequelize } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
-class User extends Model {
+export class User extends Model {
   public id!: number;
   public username!: string;
   public email!: string;
