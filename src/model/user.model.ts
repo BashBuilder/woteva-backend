@@ -43,6 +43,6 @@ export const initUserModel = (sequelize: Sequelize) => {
   return User;
 };
 
+const UserModel = initUserModel(sequelize);
 
-
-export { User };
+export default UserModel;
