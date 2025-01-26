@@ -1,8 +1,9 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
+import sequelize from "../utils/sequelize";
 
-export class User extends Model {
-  public id!: number;
+class User extends Model {
+  public id!: string;
   public username!: string;
   public email!: string;
   public password!: string;
@@ -16,21 +17,21 @@ export const initUserModel = (sequelize: Sequelize) => {
     {
       id: {
         type: DataTypes.UUID,
-        defaultValue: uuidv4,
+        defaultValue: () => uuidv4(),
         primaryKey: true,
       },
       username: {
-        type: new DataTypes.STRING(128),
+        type: DataTypes.STRING(128),
         allowNull: false,
         unique: true,
       },
       email: {
-        type: new DataTypes.STRING(128),
+        type: DataTypes.STRING(128),
         allowNull: false,
         unique: true,
       },
       password: {
-        type: new DataTypes.STRING(128),
+        type: DataTypes.STRING(128),
         allowNull: false,
       },
     },
@@ -41,3 +42,7 @@ export const initUserModel = (sequelize: Sequelize) => {
   );
   return User;
 };
+
+
+
+export { User };

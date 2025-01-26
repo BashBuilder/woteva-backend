@@ -1,18 +1,20 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
-import sequelize, {
-  checkDatabaseConnection,
-  initSequelize,
-} from "./utils/sequelize";
+import sequelize, { checkDatabaseConnection } from "./utils/sequelize";
 import cors from "cors";
 import authRoutes from "./routes/auth.route";
+// import { initUserModel } from "./model/user.model";
 
 dotenv.config();
 const app = express();
 
 const port = process.env.PORT;
 
-initSequelize();
+sequelize
+  .sync()
+  .then(() => console.log("Connected to the database"))
+  .catch((err) => console.error("Unable to connect to the database", err));
+// initUserModel(sequelize);
 
 app.use(
   express.json({
